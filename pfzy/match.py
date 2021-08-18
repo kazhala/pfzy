@@ -23,12 +23,6 @@ async def _rank_task(
     Return:
         Sorted list of haystacks based on the needle score with additional keys for the `score`
         and `indices`.
-
-    Example:
-        >>> from pfzy.score import fzy_scorer
-        >>> import asyncio
-        >>> asyncio.run(_rank_task(fzy_scorer, "ab", [{"val": "acb"}, {"val": "acbabc"}], "val"))
-        [{'score': 0.98, 'indicies': [3, 4], 'haystack': {'val': 'acbabc'}}, {'score': 0.89, 'indicies': [0, 2], 'haystack': {'val': 'acb'}}]
     """
     result = []
     for haystack in haystacks:
