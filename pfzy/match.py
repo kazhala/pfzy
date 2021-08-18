@@ -3,7 +3,7 @@ import asyncio
 import heapq
 from typing import Any, Callable, Dict, List, Union, cast
 
-from pfzy.score import SCORE_INDICIES, fzy_scorer, substr_scorer
+from pfzy.score import SCORE_INDICIES, fzy_scorer
 
 
 async def _rank_task(
@@ -35,6 +35,7 @@ async def fuzzy_match(
     haystacks: List[Union[str, Dict[str, Any]]],
     key: str = "",
     batch_size: int = 4096,
+    scorer: Callable[[str, str], SCORE_INDICIES] = None,
 ) -> List[Dict[str, Any]]:
     """Fuzzy find needle within list of haystack and get matched results with matching index.
 
@@ -48,9 +49,7 @@ async def fuzzy_match(
     Return:
         List of matching `haystacks` with additional key indicies and score.
     """
-    if " " in needle:
-        scorer = substr_scorer
-    else:
+    if scorer is None:
         scorer = fzy_scorer
 
     if not isinstance(haystacks, Dict):
