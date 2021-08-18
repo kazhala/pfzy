@@ -270,6 +270,8 @@ def substr_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
         (-inf, None)
         >>> substr_scorer("ab", "asdafswabc")
         (-1.6388888888888888, [7, 8])
+        >>> substr_scorer(" ", "asdf")
+        (0, [])
     """
     indicies = []
     offset = 0
