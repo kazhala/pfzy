@@ -67,11 +67,10 @@ async def fuzzy_match(
     if scorer is None:
         scorer = fzy_scorer
 
-    if not key:
-        key = "value"
-
     for index, haystack in enumerate(haystacks):
         if not isinstance(haystack, dict):
+            if not key:
+                key = "value"
             haystacks[index] = {key: haystack}
 
     if not key:
