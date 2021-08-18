@@ -59,3 +59,6 @@ async def test_fuzzy_match() -> None:
         scorer=substr_scorer,
         batch_size=1,
     ) == [{"val": "abca", "indicies": [0]}, {"val": "aAbc", "indices": [0]}]
+
+    with pytest.raises(TypeError):
+        await fuzzy_match("a", [{"val": "abc"}])
