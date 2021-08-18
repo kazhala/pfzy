@@ -11,10 +11,27 @@ async def _rank_task(
     needle: str,
     haystacks: List[Union[str, Dict[str, Any]]],
     key: str,
-    offset: int,
 ) -> List[Dict[str, Any]]:
+    """Calculate the score for needle against given list of haystacks and rank them.
+
+    Args:
+        scorer: Scorer to be used to do the calculation.
+        needle: Substring to search.
+        haystacks: List of dictionary containing the haystack to be searched.
+        key: The key within the `haystacks` dictionary that contains the actual string value.
+
+    Return:
+        Sorted list of haystacks based on the needle score with additional keys for the `score`
+        and `indices`.
+
+    Example:
+        >>> from pfzy.score import fzy_scorer
+        >>> import asyncio
+        >>> asyncio.run(_rank_task(fzy_scorer, "ab", [{"val": "acb"}, {"val": "acbabc"}], "val"))
+        [{'score': 0.98, 'indicies': [3, 4], 'haystack': {'val': 'acbabc'}}, {'score': 0.89, 'indicies': [0, 2], 'haystack': {'val': 'acb'}}]
+    """
     result = []
-    for index, haystack in enumerate(haystacks):
+    for haystack in haystacks:
         score, indicies = scorer(needle, cast(Dict, haystack)[key])
         if indicies is None:
             continue
@@ -23,7 +40,6 @@ async def _rank_task(
                 "score": score,
                 "indicies": indicies,
                 "haystack": haystack,
-                "index": index + offset,
             }
         )
     result.sort(key=lambda x: x["score"], reverse=True)
@@ -46,15 +62,23 @@ async def fuzzy_match(
             can obtain the haystack value to search.
         batch_size: Number of entry to be processed together.
 
-    Return:
+    Returns:
         List of matching `haystacks` with additional key indicies and score.
+
+    Examples:
+        >>> import asyncio
+        >>> asyncio.run(fuzzy_match("ab", ["acb", "acbabc"]))
+        [{'value': 'acbabc', 'indicies': [3, 4]}, {'value': 'acb', 'indicies': [0, 2]}]
     """
     if scorer is None:
         scorer = fzy_scorer
 
-    if not isinstance(haystacks, Dict):
-        haystacks = [{"value": haystack} for haystack in haystacks]
+    if not key:
         key = "value"
+
+    for index, haystack in enumerate(haystacks):
+        if not isinstance(haystack, dict):
+            haystacks[index] = {key: haystack}
 
     if not key:
         raise TypeError(
@@ -68,7 +92,6 @@ async def fuzzy_match(
                 needle,
                 haystacks[offset : offset + batch_size],
                 key,
-                offset,
             )
             for offset in range(0, len(haystacks), batch_size)
         )
@@ -76,5 +99,5 @@ async def fuzzy_match(
     results = heapq.merge(*batches, key=lambda x: x["score"], reverse=True)
     choices = []
     for candidate in results:
-        choices.append({**candidate["haystack"], "indices": candidate["indices"]})
+        choices.append({**candidate["haystack"], "indicies": candidate["indicies"]})
     return choices

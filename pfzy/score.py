@@ -24,7 +24,7 @@ def _char_range_with(
     Returns:
         A dictionary containing the given range with provided index.
 
-    Example:
+    Examples:
         >>> _char_range_with("a", "d", 1, {})
         {'a': 1, 'b': 1, 'c': 1, 'd': 1}
     """
@@ -73,11 +73,11 @@ def _bonus(haystack: str) -> List[float]:
     Args:
         haystack: String to calculate bonus.
 
-    Return:
+    Returns:
         A list of float matching the length of the given haystack
         with each index representing the bonus score to apply.
 
-    Example:
+    Examples:
         >>> _bonus("asdf")
         [0.9, 0, 0, 0]
         >>> _bonus("asdf asdf")
@@ -113,10 +113,10 @@ def _score(needle: str, haystack: str) -> SCORE_INDICIES:
         needle: Substring to find in haystack.
         haystack: String to be searched and scored.
 
-    Return:
+    Returns:
         A tuple of matching score with a list of matching indicies.
 
-    Example:
+    Examples:
         >>> _score("ab", "acb")
         (0.89, [0, 2])
         >>> _score("ab", "acbabc")
@@ -208,10 +208,10 @@ def _subsequence(needle: str, haystack: str) -> bool:
         needle: Substring to find in haystack.
         haystack: String to be searched and scored.
 
-    Return:
+    Returns:
         Boolean indicating if `needle` is subsequence of `haystack`.
 
-    Example:
+    Examples:
         >>> _subsequence("as", "bbwi")
         False
         >>> _subsequence("as", "bbaiws")
@@ -237,7 +237,7 @@ def fzy_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
         needle: Substring to find in haystack.
         haystack: String to be searched and scored.
 
-    Return:
+    Returns:
         A tuple of matching score with a list of matching indicies.
     """
     if _subsequence(needle, haystack):
@@ -253,7 +253,7 @@ def substr_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
         needle: Substring to find in haystack.
         haystack: String to be searched and scored.
 
-    Return:
+    Returns:
         A tuple of matching score with a list of matching indicies.
     """
     indicies = []
@@ -279,8 +279,3 @@ def substr_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
         + 1 / (indicies[-1] + 1),
         indicies,
     )
-
-
-if __name__ == "__main__":
-    print(fzy_scorer("sa", "asdfas aADfa aasd adsf asdfasd as as"))
-    print(fzy_scorer("abc", "auibywcabc"))
