@@ -115,12 +115,6 @@ def _score(needle: str, haystack: str) -> SCORE_INDICIES:
 
     Returns:
         A tuple of matching score with a list of matching indicies.
-
-    Examples:
-        >>> _score("ab", "acb")
-        (0.89, [0, 2])
-        >>> _score("ab", "acbabc")
-        (0.98, [3, 4])
     """
     needle_len, haystack_len = len(needle), len(haystack)
     bonus_score = _bonus(haystack)
@@ -239,6 +233,14 @@ def fzy_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
 
     Returns:
         A tuple of matching score with a list of matching indicies.
+
+    Examples:
+        >>> fzy_scorer("ab", "acb")
+        (0.89, [0, 2])
+        >>> fzy_scorer("ab", "acbabc")
+        (0.98, [3, 4])
+        >>> fzy_scorer("ab", "wc")
+        (-inf, None)
     """
     if _subsequence(needle, haystack):
         return _score(needle, haystack)
@@ -249,12 +251,25 @@ def fzy_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
 def substr_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
     """Match needle against haystack using substrings.
 
+    Scores may be negative but the higher the score, the higher
+    the match. -inf means no match found.
+
     Args:
         needle: Substring to find in haystack.
         haystack: String to be searched and scored.
 
     Returns:
         A tuple of matching score with a list of matching indicies.
+
+    Example:
+        >>> substr_scorer("ab", "awsab")
+        (-1.3, [3, 4])
+        >>> substr_scorer("ab", "abc")
+        (0.5, [0, 1])
+        >>> substr_scorer("ab", "iop")
+        (-inf, None)
+        >>> substr_scorer("ab", "asdafswabc")
+        (-1.6388888888888888, [7, 8])
     """
     indicies = []
     offset = 0
