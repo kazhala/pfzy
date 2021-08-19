@@ -13,5 +13,7 @@
 ```{toctree}
 :hidden:
 
+pages/usage.md
 pages/api.md
+GitHub Repository <https://github.com/kazhala/pfzy>
 ```
