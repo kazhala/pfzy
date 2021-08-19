@@ -1,8 +1,28 @@
 [tool.poetry]
 name = "pfzy"
-version = "0.1.0"
+version = "0.2.0"
 description = "Python port of the fzy fuzzy string matching algorithm"
 authors = ["Kevin Zhuang <kevin7441@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/kazhala/pfzy"
+license = "MIT"
+keywords=["fuzzy", "string", "fzy", "search","development"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: Unix",
+  "Operating System :: Microsoft",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Topic :: Software Development",
+  "Topic :: Software Development :: Libraries",
+]
+packages = [
+  {include = "pfzy"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
