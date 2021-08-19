@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "pfzy"
 version = "0.1.0"
-description = "Python port of fzy fuzzy string matching logic"
+description = "Python port of the fzy fuzzy string matching algorithm"
 authors = ["Kevin Zhuang <kevin7441@gmail.com>"]
 
 [tool.poetry.dependencies]
