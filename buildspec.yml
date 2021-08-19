@@ -1,0 +1,23 @@
+version: 0.2
+
+env:
+  parameter-store:
+    PYPI_USERNAME: /pypi/username
+    PYPI_PASSWORD: /pypi/password
+
+phases:
+  install:
+    runtime-versions:
+      python: latest
+    commands:
+      - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+      - source $HOME/.poetry/env
+      - poetry install
+
+  build:
+    commands:
+      - poetry build
+
+  post_build:
+    commands:
+      - poetry publish --username $PYPI_USERNAME --password $PYPI_PASSWORD
