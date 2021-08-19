@@ -23,7 +23,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 html_theme = "furo"
 html_title = "pfzy"
-html_static_path = ["_static"]
+# html_static_path = ["_static"]
 
 napoleon_include_init_with_doc = True
 autosectionlabel_prefix_document = True
