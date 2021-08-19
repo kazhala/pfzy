@@ -47,7 +47,15 @@ async def fuzzy_match(
     batch_size: int = 4096,
     scorer: Callable[[str, str], SCORE_INDICIES] = None,
 ) -> List[Dict[str, Any]]:
-    """Fuzzy find needle within list of haystack and get matched results with matching index.
+    """Fuzzy find the needle within list of haystacks and get matched results with matching index.
+
+    Note:
+        The `key` argument is optional when the provided `haystacks` argument is a list of :class:`str`.
+        It will be given a default key `value` if not present.
+
+    Warning:
+        The `key` argument is required when provided `haystacks` argument is a list of :class:`dict`.
+        If not present, :class:`TypeError` will be raised.
 
     Args:
         needle: String to search within the `haystacks`.
@@ -55,6 +63,10 @@ async def fuzzy_match(
         key: If `haystacks` is a list of dictionary, provide the key that
             can obtain the haystack value to search.
         batch_size: Number of entry to be processed together.
+
+    Raises:
+        TypeError: When the argument `haystacks` is :class:`list` of :class:`dict` and the `key` argument
+            is missing, :class:`TypeError` will be raised.
 
     Returns:
         List of matching `haystacks` with additional key indicies and score.
