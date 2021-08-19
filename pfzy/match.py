@@ -3,11 +3,11 @@ import asyncio
 import heapq
 from typing import Any, Callable, Dict, List, Union, cast
 
-from pfzy.score import SCORE_INDICIES, fzy_scorer
+from pfzy.score import SCORE_INDICES, fzy_scorer
 
 
 async def _rank_task(
-    scorer: Callable[[str, str], SCORE_INDICIES],
+    scorer: Callable[[str, str], SCORE_INDICES],
     needle: str,
     haystacks: List[Union[str, Dict[str, Any]]],
     key: str,
@@ -26,13 +26,13 @@ async def _rank_task(
     """
     result = []
     for haystack in haystacks:
-        score, indicies = scorer(needle, cast(Dict, haystack)[key])
-        if indicies is None:
+        score, indices = scorer(needle, cast(Dict, haystack)[key])
+        if indices is None:
             continue
         result.append(
             {
                 "score": score,
-                "indicies": indicies,
+                "indices": indices,
                 "haystack": haystack,
             }
         )
@@ -45,7 +45,7 @@ async def fuzzy_match(
     haystacks: List[Union[str, Dict[str, Any]]],
     key: str = "",
     batch_size: int = 4096,
-    scorer: Callable[[str, str], SCORE_INDICIES] = None,
+    scorer: Callable[[str, str], SCORE_INDICES] = None,
 ) -> List[Dict[str, Any]]:
     """Fuzzy find the needle within list of haystacks and get matched results with matching index.
 
@@ -63,19 +63,19 @@ async def fuzzy_match(
         key: If `haystacks` is a list of dictionary, provide the key that
             can obtain the haystack value to search.
         batch_size: Number of entry to be processed together.
-        scorer (Callable[[str, str], SCORE_INDICIES]): Desired scorer to use. Currently only :func:`~pfzy.score.fzy_scorer` and :func:`~pfzy.score.substr_scorer` is supported.
+        scorer (Callable[[str, str], SCORE_indices]): Desired scorer to use. Currently only :func:`~pfzy.score.fzy_scorer` and :func:`~pfzy.score.substr_scorer` is supported.
 
     Raises:
         TypeError: When the argument `haystacks` is :class:`list` of :class:`dict` and the `key` argument
             is missing, :class:`TypeError` will be raised.
 
     Returns:
-        List of matching `haystacks` with additional key indicies and score.
+        List of matching `haystacks` with additional key indices and score.
 
     Examples:
         >>> import asyncio
         >>> asyncio.run(fuzzy_match("ab", ["acb", "acbabc"]))
-        [{'value': 'acbabc', 'indicies': [3, 4]}, {'value': 'acb', 'indicies': [0, 2]}]
+        [{'value': 'acbabc', 'indices': [3, 4]}, {'value': 'acb', 'indices': [0, 2]}]
     """
     if scorer is None:
         scorer = fzy_scorer
@@ -105,5 +105,5 @@ async def fuzzy_match(
     results = heapq.merge(*batches, key=lambda x: x["score"], reverse=True)
     choices = []
     for candidate in results:
-        choices.append({**candidate["haystack"], "indicies": candidate["indicies"]})
+        choices.append({**candidate["haystack"], "indices": candidate["indices"]})
     return choices

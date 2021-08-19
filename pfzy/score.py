@@ -55,7 +55,7 @@ BONUS_STATES = [{}, BONUS_MAP, lower_with(SCORE_MATCH_CAPITAL, BONUS_MAP)]
 BONUS_INDEX = digit_with(1, lower_with(1, upper_with(2, {})))
 
 
-SCORE_INDICIES = Tuple[float, Optional[List[int]]]
+SCORE_INDICES = Tuple[float, Optional[List[int]]]
 
 
 def _bonus(haystack: str) -> List[float]:
@@ -95,7 +95,7 @@ def _bonus(haystack: str) -> List[float]:
     return bonus
 
 
-def _score(needle: str, haystack: str) -> SCORE_INDICIES:
+def _score(needle: str, haystack: str) -> SCORE_INDICES:
     """Use fzy logic to calculate score for `needle` within the given `haystack`.
 
     2 2D array to track the score.
@@ -107,14 +107,14 @@ def _score(needle: str, haystack: str) -> SCORE_INDICIES:
 
     After the score is calculated, the final matching score will be stored at the last position of the `result_score`.
 
-    Backtrack the result by comparing the 2 2D array to find the corresponding indicies.
+    Backtrack the result by comparing the 2 2D array to find the corresponding indices.
 
     Args:
         needle: Substring to find in haystack.
         haystack: String to be searched and scored.
 
     Returns:
-        A tuple of matching score with a list of matching indicies.
+        A tuple of matching score with a list of matching indices.
     """
     needle_len, haystack_len = len(needle), len(haystack)
     bonus_score = _bonus(haystack)
@@ -162,12 +162,12 @@ def _score(needle: str, haystack: str) -> SCORE_INDICIES:
                 # increment the best score with gap_score since no match
                 result_score[i][j] = prev_score = prev_score + gap_score
 
-    # backtrace to find the all indicies of optimal matching
+    # backtrace to find the all indices of optimal matching
     # starting from the end to pick the first possible match we encounter
     i, j = needle_len - 1, haystack_len - 1
     # use to determine if the current match is consequtive match
     match_required = False
-    indicies = [0 for _ in range(needle_len)]
+    indices = [0 for _ in range(needle_len)]
 
     while i >= 0:
         while j >= 0:
@@ -185,14 +185,14 @@ def _score(needle: str, haystack: str) -> SCORE_INDICIES:
                     and result_score[i][j]
                     == running_score[i - 1][j - 1] + SCORE_MATCH_CONSECUTIVE
                 )
-                indicies[i] = j
+                indices[i] = j
                 j -= 1
                 break
             else:
                 j -= 1
         i -= 1
 
-    return result_score[needle_len - 1][haystack_len - 1], indicies
+    return result_score[needle_len - 1][haystack_len - 1], indices
 
 
 def _subsequence(needle: str, haystack: str) -> bool:
@@ -224,7 +224,7 @@ def _subsequence(needle: str, haystack: str) -> bool:
     return True
 
 
-def fzy_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
+def fzy_scorer(needle: str, haystack: str) -> SCORE_INDICES:
     """Use fzy matching algorithem to match needle against haystack.
 
     Note:
@@ -240,7 +240,7 @@ def fzy_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
         haystack: String to be searched and scored against.
 
     Returns:
-        A tuple of matching score with a list of matching indicies.
+        A tuple of matching score with a list of matching indices.
 
     Examples:
         >>> fzy_scorer("ab", "acb")
@@ -256,7 +256,7 @@ def fzy_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
         return SCORE_MIN, None
 
 
-def substr_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
+def substr_scorer(needle: str, haystack: str) -> SCORE_INDICES:
     """Match needle against haystack using :meth:`str.find`.
 
     Note:
@@ -271,7 +271,7 @@ def substr_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
         haystack: String to be searched and scored against.
 
     Returns:
-        A tuple of matching score with a list of matching indicies.
+        A tuple of matching score with a list of matching indices.
 
     Example:
         >>> substr_scorer("ab", "awsab")
@@ -285,7 +285,7 @@ def substr_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
         >>> substr_scorer(" ", "asdf")
         (0, [])
     """
-    indicies = []
+    indices = []
     offset = 0
     needle, haystack = needle.lower(), haystack.lower()
 
@@ -296,15 +296,13 @@ def substr_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
         if offset < 0:
             return SCORE_MIN, None
         needle_len = len(needle)
-        indicies.extend(range(offset, offset + needle_len))
+        indices.extend(range(offset, offset + needle_len))
         offset += needle_len
 
-    if not indicies:
-        return 0, indicies
+    if not indices:
+        return 0, indices
 
     return (
-        -(indicies[-1] + 1 - indicies[0])
-        + 2 / (indicies[0] + 1)
-        + 1 / (indicies[-1] + 1),
-        indicies,
+        -(indices[-1] + 1 - indices[0]) + 2 / (indices[0] + 1) + 1 / (indices[-1] + 1),
+        indices,
     )
