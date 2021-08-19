@@ -59,10 +59,11 @@ async def fuzzy_match(
 
     Args:
         needle: String to search within the `haystacks`.
-        haystack: List of haystack/longer strings to be searched.
+        haystacks: List of haystack/longer strings to be searched.
         key: If `haystacks` is a list of dictionary, provide the key that
             can obtain the haystack value to search.
         batch_size: Number of entry to be processed together.
+        scorer (Callable[[str, str], SCORE_INDICIES]): Desired scorer to use. Currently only :func:`~pfzy.score.fzy_scorer` and :func:`~pfzy.score.substr_scorer` is supported.
 
     Raises:
         TypeError: When the argument `haystacks` is :class:`list` of :class:`dict` and the `key` argument

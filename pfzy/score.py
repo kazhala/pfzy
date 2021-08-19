@@ -227,9 +227,17 @@ def _subsequence(needle: str, haystack: str) -> bool:
 def fzy_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
     """Use fzy matching algorithem to match needle against haystack.
 
+    Note:
+        The `fzf` unordered search is not supported for performance concern.
+        When the provided `needle` is not a subsequence of `haystack` at all,
+        then `(-inf, None)` is returned.
+
+    See Also:
+        https://github.com/jhawthorn/fzy/blob/master/src/match.c
+
     Args:
         needle: Substring to find in haystack.
-        haystack: String to be searched and scored.
+        haystack: String to be searched and scored against.
 
     Returns:
         A tuple of matching score with a list of matching indicies.
@@ -249,14 +257,18 @@ def fzy_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
 
 
 def substr_scorer(needle: str, haystack: str) -> SCORE_INDICIES:
-    """Match needle against haystack using substrings.
+    """Match needle against haystack using :meth:`str.find`.
 
-    Scores may be negative but the higher the score, the higher
-    the match. -inf means no match found.
+    Note:
+        Scores may be negative but the higher the score, the higher
+        the match rank. `-inf` score means no match found.
+
+    See Also:
+        https://github.com/aslpavel/sweep.py/blob/3f4a179b708059c12b9e5d76d1eb3c70bf2caadc/sweep.py#L837
 
     Args:
         needle: Substring to find in haystack.
-        haystack: String to be searched and scored.
+        haystack: String to be searched and scored against.
 
     Returns:
         A tuple of matching score with a list of matching indicies.
