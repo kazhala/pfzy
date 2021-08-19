@@ -1,5 +1,7 @@
 # API Reference
 
+<!-- toc -->
+
 ## match
 
 ```{eval-rst}
