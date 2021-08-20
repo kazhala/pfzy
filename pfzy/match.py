@@ -4,6 +4,7 @@ import heapq
 from typing import Any, Callable, Dict, List, Union, cast
 
 from pfzy.score import SCORE_INDICES, fzy_scorer
+from pfzy.types import HAYSTACKS
 
 
 async def _rank_task(
@@ -42,7 +43,7 @@ async def _rank_task(
 
 async def fuzzy_match(
     needle: str,
-    haystacks: List[Union[str, Dict[str, Any]]],
+    haystacks: HAYSTACKS,
     key: str = "",
     batch_size: int = 4096,
     scorer: Callable[[str, str], SCORE_INDICES] = None,

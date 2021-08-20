@@ -1,6 +1,8 @@
 """Module contains the score calculation algorithems."""
 from functools import partial
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List
+
+from pfzy.types import SCORE_INDICES
 
 SCORE_MIN = float("-inf")
 SCORE_MAX = float("inf")
@@ -53,9 +55,6 @@ BONUS_MAP = {
 }
 BONUS_STATES = [{}, BONUS_MAP, lower_with(SCORE_MATCH_CAPITAL, BONUS_MAP)]
 BONUS_INDEX = digit_with(1, lower_with(1, upper_with(2, {})))
-
-
-SCORE_INDICES = Tuple[float, Optional[List[int]]]
 
 
 def _bonus(haystack: str) -> List[float]:
