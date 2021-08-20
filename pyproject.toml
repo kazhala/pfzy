@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pfzy"
-version = "0.2.1"
+version = "0.3.0"
 description = "Python port of the fzy fuzzy string matching algorithm"
 authors = ["Kevin Zhuang <kevin7441@gmail.com>"]
 readme = "README.md"
@@ -9,7 +9,7 @@ documentation = "https://pfzy.readthedocs.io/"
 license = "MIT"
 keywords=["fuzzy", "string", "fzy", "search","development"]
 classifiers = [
-  "Development Status :: 2 - Pre-Alpha",
+  "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
   "Operating System :: Unix",
