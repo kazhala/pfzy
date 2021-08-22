@@ -6,6 +6,8 @@ sys.path.insert(0, os.path.abspath("."))
 project = "pfzy"
 copyright = "2021, Kevin Zhuang"
 author = "Kevin Zhuang"
+version = "0.3.1"
+release = "0.3.1"
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -23,7 +25,6 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 html_theme = "furo"
 html_title = "pfzy"
-# html_static_path = ["_static"]
 
 napoleon_include_init_with_doc = True
 autosectionlabel_prefix_document = True
