@@ -1,8 +1,5 @@
 version: 2
 
-formats:
-  - pdf
-
 sphinx:
   configuration: docs/conf.py
 
