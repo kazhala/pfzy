@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pfzy"
-version = "0.3.2"
+version = "0.3.3"
 description = "Python port of the fzy fuzzy string matching algorithm"
 authors = ["Kevin Zhuang <kevin7441@gmail.com>"]
 readme = "README.md"
