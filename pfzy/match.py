@@ -106,5 +106,6 @@ async def fuzzy_match(
     results = heapq.merge(*batches, key=lambda x: x["score"], reverse=True)
     choices = []
     for candidate in results:
-        choices.append({**candidate["haystack"], "indices": candidate["indices"]})
+        candidate["haystack"]["indices"] = candidate["indices"]
+        choices.append(candidate["haystack"])
     return choices
