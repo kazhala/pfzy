@@ -1,6 +1,6 @@
 """Module contains the score calculation algorithems."""
 from functools import partial
-from typing import Dict, List
+from typing import Dict, List, Union, cast
 
 from pfzy.types import SCORE_INDICES
 
@@ -13,8 +13,8 @@ SCORE_MATCH_CONSECUTIVE = 1.0
 
 
 def _char_range_with(
-    char_start: str, char_stop: str, value, hash_table: Dict[str, int]
-) -> Dict[str, int]:
+    char_start: str, char_stop: str, value, hash_table: Dict[str, Union[int, float]]
+) -> Dict[str, Union[int, float]]:
     """Generate index mapping for `bonus` calculation.
 
     Args:
@@ -54,7 +54,7 @@ BONUS_MAP = {
     ".": SCORE_MATCH_DOT,
 }
 BONUS_STATES = [{}, BONUS_MAP, lower_with(SCORE_MATCH_CAPITAL, BONUS_MAP)]
-BONUS_INDEX = digit_with(1, lower_with(1, upper_with(2, {})))
+BONUS_INDEX = cast(Dict[str, int], digit_with(1, lower_with(1, upper_with(2, {}))))
 
 
 def _bonus(haystack: str) -> List[float]:
