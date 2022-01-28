@@ -15,7 +15,6 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "sphinx.ext.autosectionlabel",
-    "furo",
     "myst_parser",
     "sphinx_copybutton",
 ]
